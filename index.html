@@ -104,19 +104,9 @@
       height: 100%;
       border-radius: 44px;
       overflow: hidden;
-      background: var(--bg);
-    }
-
-    /* Зелена смужка статус-бара — продовження хедера сайту під «острівцем» */
-    .screen::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--safe-top);
+      /* фон екрана = колір хедера сайту, тож статус-бар під «острівцем»
+         зливається з хедером без жодного шва */
       background: #327a40;
-      z-index: 1;
     }
 
     .screen iframe {
