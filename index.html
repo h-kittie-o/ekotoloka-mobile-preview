@@ -9,108 +9,110 @@
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --frame: #1c1c1e;
-      --frame-edge: #2c2c2e;
-      --bg: #faf1e8;
+      /* Логічний розмір екрана iPhone 14 (390×844 pt) — фіксований, реалістичний */
+      --screen-w: 390px;
+      --screen-h: 844px;
+      --bezel: 13px;                 /* товщина рамки навколо екрана */
+      --device-w: calc(var(--screen-w) + var(--bezel) * 2);   /* 416 */
+      --device-h: calc(var(--screen-h) + var(--bezel) * 2);   /* 870 */
       --green: #327a40;
       --text: #1a2e1f;
       --muted: #4a5750;
-      /* Логічний розмір екрана iPhone 14 (390×844 pt) */
-      --screen-w: 390px;
-      --screen-h: 844px;
-      --bezel: 14px;
+      --bg: #faf1e8;
     }
 
     * { box-sizing: border-box; }
-
     html, body { height: 100%; margin: 0; }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(900px 600px at 50% -10%, #fff8ef 0%, rgba(255,248,239,0) 60%),
+        radial-gradient(1000px 700px at 50% -15%, #fff8ef 0%, rgba(255,248,239,0) 62%),
         var(--bg);
-      min-height: 100dvh;
+      height: 100dvh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 22px;
-      padding: 28px 16px 36px;
     }
 
     .title {
       text-align: center;
+      padding: 18px 16px 10px;
+      flex: none;
     }
     .title h1 {
       font-family: 'Unbounded', sans-serif;
       font-weight: 700;
-      font-size: clamp(20px, 4vw, 28px);
-      margin: 0 0 4px;
+      font-size: clamp(18px, 3vw, 26px);
+      margin: 0 0 2px;
       color: var(--green);
       letter-spacing: -0.01em;
     }
-    .title p {
-      margin: 0;
-      font-size: 14px;
-      color: var(--muted);
+    .title p { margin: 0; font-size: 13px; color: var(--muted); }
+
+    /* Сцена: займає весь вільний простір; телефон у ній масштабується, щоб влізти */
+    .stage {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    /* ===== iPhone-мокап ===== */
+    /* ===== iPhone-мокап (фіксований розмір, масштабується через transform) ===== */
     .phone {
       position: relative;
-      width: calc(var(--screen-w) + var(--bezel) * 2);
-      height: calc(var(--screen-h) + var(--bezel) * 2);
-      max-height: calc(100dvh - 150px);
-      aspect-ratio: calc(var(--screen-w) + var(--bezel) * 2) / calc(var(--screen-h) + var(--bezel) * 2);
-      background: linear-gradient(160deg, #3a3a3c 0%, var(--frame) 40%, #161618 100%);
-      border-radius: 58px;
+      width: var(--device-w);
+      height: var(--device-h);
+      flex: none;
+      transform: scale(var(--scale, 1));
+      transform-origin: center center;
+      background: linear-gradient(150deg, #43464b 0%, #1d1f24 38%, #0c0d10 100%);
+      border-radius: 56px;
       padding: var(--bezel);
       box-shadow:
-        0 2px 0 1px var(--frame-edge) inset,
-        0 0 0 2px #0a0a0a,
-        0 40px 80px -24px rgba(20, 40, 25, 0.45),
-        0 16px 40px -20px rgba(0, 0, 0, 0.5);
+        0 0 0 2px #050506,                              /* зовнішній кант */
+        0 1.5px 0 1px rgba(255,255,255,0.10) inset,     /* блік титану зверху */
+        0 50px 90px -30px rgba(20, 45, 28, 0.5),
+        0 22px 50px -26px rgba(0, 0, 0, 0.55);
     }
 
-    /* Бічні кнопки */
-    .phone::before,
-    .phone::after {
-      content: "";
+    /* Бічні кнопки (титанова грань) */
+    .btn-side {
       position: absolute;
-      background: #0e0e10;
-      border-radius: 2px;
+      background: linear-gradient(90deg, #1a1c20, #34373d);
+      border-radius: 3px 0 0 3px;
     }
-    .phone::before { /* перемикач беззвучного + гучність */
-      left: -3px;
-      top: 120px;
-      width: 3px;
-      height: 26px;
-      box-shadow: 0 44px 0 #0e0e10, 0 90px 0 #0e0e10;
-    }
-    .phone::after { /* кнопка живлення */
-      right: -3px;
-      top: 170px;
-      width: 3px;
-      height: 64px;
+    .btn-side.action { left: -3px; top: 116px; width: 3px; height: 28px; }
+    .btn-side.vol-up  { left: -3px; top: 168px; width: 3px; height: 50px; }
+    .btn-side.vol-dn  { left: -3px; top: 230px; width: 3px; height: 50px; }
+    .btn-side.power   {
+      right: -3px; top: 188px; width: 3px; height: 78px;
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(270deg, #1a1c20, #34373d);
     }
 
     .screen {
       position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 46px;
+      border-radius: 44px;
       overflow: hidden;
       background: var(--bg);
     }
 
     .screen iframe {
+      position: absolute;
+      inset: 0;
       width: var(--screen-w);
       height: var(--screen-h);
       border: 0;
       display: block;
-      /* Якщо рамка масштабується на малих екранах — лишаємо логічний розмір */
     }
 
     /* Dynamic Island */
@@ -119,35 +121,35 @@
       top: 11px;
       left: 50%;
       transform: translateX(-50%);
-      width: 118px;
-      height: 33px;
+      width: 120px;
+      height: 34px;
       background: #000;
       border-radius: 20px;
       z-index: 5;
       pointer-events: none;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.6);
+    }
+    .island::after { /* око камери */
+      content: "";
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #2b3a4d 0%, #0a0e14 70%);
     }
 
     .hint {
-      font-size: 13px;
+      flex: none;
+      padding: 10px 16px 16px;
+      font-size: 12.5px;
       color: var(--muted);
       text-align: center;
-      max-width: 360px;
       line-height: 1.5;
     }
     .hint a { color: var(--green); }
-
-    /* На вузьких/низьких екранах трохи зменшуємо рамку, щоб влізла */
-    @media (max-height: 920px) {
-      :root { --screen-h: 760px; }
-    }
-    @media (max-height: 820px) {
-      :root { --screen-h: 680px; }
-    }
-    @media (max-width: 460px) {
-      :root { --screen-w: 340px; --bezel: 11px; }
-      .phone { border-radius: 48px; }
-      .screen { border-radius: 38px; }
-    }
   </style>
 </head>
 <body>
@@ -156,21 +158,50 @@
     <p>Мобільна версія сайту</p>
   </div>
 
-  <div class="phone" role="img" aria-label="Мокап iPhone з мобільною версією сайту Екотолока">
-    <div class="screen">
-      <div class="island"></div>
-      <iframe
-        src="https://h-kittie-o.github.io/ekotoloka-prototype/"
-        title="Екотолока — мобільна версія"
-        loading="eager"
-        allow="clipboard-write; web-share"></iframe>
+  <div class="stage">
+    <div class="phone" role="img" aria-label="Мокап iPhone з мобільною версією сайту Екотолока">
+      <span class="btn-side action"></span>
+      <span class="btn-side vol-up"></span>
+      <span class="btn-side vol-dn"></span>
+      <span class="btn-side power"></span>
+      <div class="screen">
+        <div class="island"></div>
+        <iframe
+          src="https://h-kittie-o.github.io/ekotoloka-prototype/"
+          title="Екотолока — мобільна версія"
+          loading="eager"
+          allow="clipboard-write; web-share"></iframe>
+      </div>
     </div>
   </div>
 
   <p class="hint">
-    Це живий сайт у рамці айфона. Навігація — клікай всередині екрана.<br>
-    Відкрити повну версію:
-    <a href="https://h-kittie-o.github.io/ekotoloka-prototype/" target="_blank" rel="noopener">h-kittie-o.github.io/ekotoloka-prototype</a>
+    Живий сайт у рамці айфона — навігація кліками всередині екрана.
+    Повна версія: <a href="https://h-kittie-o.github.io/ekotoloka-prototype/" target="_blank" rel="noopener">h-kittie-o.github.io/ekotoloka-prototype</a>
   </p>
+
+  <script>
+    // Масштабуємо телефон цілісно, щоб завжди повністю влізав у сцену зі збереженням пропорцій.
+    (function () {
+      var stage = document.querySelector('.stage');
+      var phone = document.querySelector('.phone');
+      var DEVICE_W = 416, DEVICE_H = 870;   // px, відповідає :root (390+26 × 844+26)
+      var MARGIN = 24;                        // дихання навколо рамки
+
+      function fit() {
+        var availW = stage.clientWidth  - MARGIN * 2;
+        var availH = stage.clientHeight - MARGIN * 2;
+        var scale = Math.min(availW / DEVICE_W, availH / DEVICE_H);
+        scale = Math.max(0.2, Math.min(scale, 1.15)); // не дрібнити й не роздувати надмірно
+        phone.style.setProperty('--scale', scale.toFixed(4));
+      }
+
+      fit();
+      window.addEventListener('resize', fit);
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(stage);
+      // перерахунок після завантаження шрифтів/розкладки
+      window.addEventListener('load', fit);
+    })();
+  </script>
 </body>
 </html>
