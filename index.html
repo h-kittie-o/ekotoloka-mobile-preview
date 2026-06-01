@@ -13,6 +13,7 @@
       --screen-w: 390px;
       --screen-h: 844px;
       --safe-top: 32px;              /* зона статус-бара під Dynamic Island */
+      --sb: 18px;                    /* ширина повзунка скролу — ховаємо за краєм */
       --bezel: 13px;                 /* товщина рамки навколо екрана */
       --device-w: calc(var(--screen-w) + var(--bezel) * 2);   /* 416 */
       --device-h: calc(var(--screen-h) + var(--bezel) * 2);   /* 870 */
@@ -113,7 +114,9 @@
       position: absolute;
       top: var(--safe-top);          /* опускаємо сайт нижче Dynamic Island */
       left: 0;
-      width: var(--screen-w);
+      /* робимо iframe ширшим на ширину повзунка — він виходить за правий
+         край екрана й обрізається overflow:hidden; видимий контент = 390px */
+      width: calc(var(--screen-w) + var(--sb));
       height: calc(var(--screen-h) - var(--safe-top));
       border: 0;
       display: block;
