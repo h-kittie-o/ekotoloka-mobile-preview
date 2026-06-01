@@ -12,7 +12,7 @@
       /* Логічний розмір екрана iPhone 14 (390×844 pt) — фіксований, реалістичний */
       --screen-w: 390px;
       --screen-h: 844px;
-      --safe-top: 40px;              /* зона статус-бара під Dynamic Island */
+      --safe-top: 32px;              /* зона статус-бара під Dynamic Island */
       --bezel: 13px;                 /* товщина рамки навколо екрана */
       --device-w: calc(var(--screen-w) + var(--bezel) * 2);   /* 416 */
       --device-h: calc(var(--screen-h) + var(--bezel) * 2);   /* 870 */
@@ -132,11 +132,11 @@
     /* Dynamic Island */
     .island {
       position: absolute;
-      top: 8px;
+      top: 6px;
       left: 50%;
       transform: translateX(-50%);
-      width: 120px;
-      height: 34px;
+      width: 112px;
+      height: 28px;
       background: #000;
       border-radius: 20px;
       z-index: 5;
