@@ -110,10 +110,27 @@
       background: #327a40;
     }
 
+    /* Зелена смужка статус-бара ПОВЕРХ iframe із запасом униз — назавжди
+       перекриває стик, де при скролі може промигнути просвіт сайту.
+       Лого хедера сайту нижче (≈46px), тож воно не закривається. */
+    .screen::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--safe-top) + 10px);
+      background: #327a40;
+      z-index: 3;
+      pointer-events: none;
+    }
+
     .screen iframe {
       position: absolute;
       top: var(--safe-top);          /* опускаємо сайт нижче Dynamic Island */
       left: 0;
+      z-index: 1;
+      background: #327a40;            /* фон елемента iframe на час перемалювання */
       /* робимо iframe ширшим на ширину повзунка — він виходить за правий
          край екрана й обрізається overflow:hidden; видимий контент = 390px */
       width: calc(var(--screen-w) + var(--sb));
